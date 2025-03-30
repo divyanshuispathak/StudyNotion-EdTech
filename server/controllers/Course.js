@@ -1,11 +1,11 @@
 const Course = require("../models/Course");
-const Tags = require("../models/Tags");
+const Category = require("../models/Category");
 const User = require("../models/User");
 const UploadImage = require("../utils/imageUploader");
 
 exports.createCourse = async (req, res) => {
   try {
-    const { courseName, courseDescription, whatYouWillLearn, price, tag } =
+    const { courseName, courseDescription, whatYouWillLearn, price, category } =
       req.body;
     const thumbnail = req.files.thumbnailImage;
 
@@ -14,7 +14,7 @@ exports.createCourse = async (req, res) => {
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !tag ||
+      !category ||
       !thumbnail
     ) {
       return res.status(400).json({
@@ -33,11 +33,11 @@ exports.createCourse = async (req, res) => {
       });
     }
 
-    const tagDetails = await Tags.findById(tag);
-    if (!tagDetails) {
+    const categoryDetails = await Category.findById(category);
+    if (!categoryDetails) {
       return res.status(404).json({
         success: false,
-        message: "Tag Details Not Found",
+        message: "Category Details Not Found",
       });
     }
 
@@ -52,7 +52,7 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
-      tag: tagDetails._id,
+      category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
     });
 
@@ -70,7 +70,7 @@ exports.createCourse = async (req, res) => {
       }
     );
 
-    // Update Tag schema HW
+    // Update Category schema HW
 
     return res.status(200).json({
       success: true,
