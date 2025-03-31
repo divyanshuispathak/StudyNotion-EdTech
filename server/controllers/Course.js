@@ -46,7 +46,7 @@ exports.createCourse = async (req, res) => {
       process.env.FOLDER_NAME
     );
 
-    const newCourse = await Course.create({
+    const newCourse = await Course.create({ 
       courseName,
       courseDescription,
       instructor: instructorDetails._id,
@@ -71,6 +71,19 @@ exports.createCourse = async (req, res) => {
     );
 
     // Update Category schema HW
+    await Category.findByIdAndUpdate(
+      {
+        id: categoryDetails._id,
+      },
+      {
+        $push: {
+          course: newCourse._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
 
     return res.status(200).json({
       success: true,
