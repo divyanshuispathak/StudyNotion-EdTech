@@ -46,7 +46,7 @@ exports.createCourse = async (req, res) => {
       process.env.FOLDER_NAME
     );
 
-    const newCourse = await Course.create({ 
+    const newCourse = await Course.create({
       courseName,
       courseDescription,
       instructor: instructorDetails._id,
