@@ -1,5 +1,6 @@
 const User = require("../models/User");
 const Otp = require("../models/Otp");
+const Profile = require("../models/Profile")
 const otpGenerator = require("otp-generator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -108,7 +109,7 @@ exports.signup = async (req, res) => {
         success: false,
         message: "Otp not found",
       });
-    } else if (otp !== recentOtp.otp) {
+    } else if (otp !== recentOtp[0].otp) {
       return res.status(400).json({
         success: false,
         message: "Invalid Otp",
@@ -116,6 +117,9 @@ exports.signup = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+
+    let approved = "";
+		approved === "Instructor" ? (approved = false) : (approved = true);
 
     const profileDetails = await Profile.create({
       gender: null,
