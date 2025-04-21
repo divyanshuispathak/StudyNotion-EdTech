@@ -109,3 +109,11 @@
     --color-pure-greys-800: #171717;
     --color-pure-greys-900: #141414;
 }
+
+.homepage_bg {
+    background: url("../src/assets/Images/bghome.svg");
+  }
+
+  html, body {
+    overflow-x: hidden;
+  }
