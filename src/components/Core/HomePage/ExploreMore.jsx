@@ -2,6 +2,7 @@ import React from "react";
 import { HomePageExplore } from "../../../data/homepage-explore";
 import HighlightText from "./HighlightText";
 import { useState } from "react";
+import CourseCard from "./CourseCard";
 
 const tabsName = [
   "Free",
@@ -62,21 +63,18 @@ const ExploreMore = () => {
       <div className="lg:h-[150px]"></div>
 
       {/* course card ka group */}
-
-      {/* <div className='absolute flex flex-row gap-10 justify-between w-full'>
-        {
-            courses.map(  (element, index) => {
-                return (
-                    <CourseCard 
-                    key={index}
-                    cardData = {element}
-                    currentCard = {currentCard}
-                    setCurrentCard = {setCurrentCard}
-                    />
-                )
-            } )
-        }
-      </div> */}
+      <div className="lg:absolute gap-10 justify-center lg:gap-0 flex lg:justify-between flex-wrap w-full lg:bottom-[0] lg:left-[50%] lg:translate-x-[-50%] lg:translate-y-[50%] text-black lg:mb-0 mb-7 lg:px-0 px-3">
+        {courses.map((ele, index) => {
+          return (
+            <CourseCard
+              key={index}
+              cardData={ele}
+              currentCard={currentCard}
+              setCurrentCard={setCurrentCard}
+            />
+          );
+        })}
+      </div>
     </div>
   );
 };
