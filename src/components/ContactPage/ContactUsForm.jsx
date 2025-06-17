@@ -135,7 +135,7 @@ const ContactUsForm = () => {
             placeholder="Enter Your message here"
             {...register("message", { required: true })}
           />
-          {errors.message && <span>PLease enter your message.</span>}
+          {errors.message && <span>Please enter your message.</span>}
         </div>
 
         <button
