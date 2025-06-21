@@ -9,6 +9,10 @@ import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
+import MyProfile from "./components/Core/Dashboard/MyProfile";
+import Dashboard from "./pages/Dashboard";
+import PrivateRoute from "./components/Core/Auth/PrivateRoute";
+import Error from "./pages/Error";
 
 function App() {
   return (
@@ -64,6 +68,18 @@ function App() {
             </OpenRoute>
           }
         />
+        <Route
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        >
+          <Route path="dashboard/my-profile" element={<MyProfile />} />
+          {/* <Route path="dashboard/settings" element={<Setting />} /> */}
+        </Route>
+        
+        <Route path="*" element={<Error />} />
       </Routes>
     </div>
   );
