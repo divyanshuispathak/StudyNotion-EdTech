@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Home from "../src/pages/Home";
 import Navbar from "./components/common/Navbar";
 import OpenRoute from "./components/Core/Auth/OpenRoute";
@@ -9,14 +9,25 @@ import ForgotPassword from "./pages/ForgotPassword";
 import UpdatePassword from "./pages/UpdatePassword";
 import VerifyEmail from "./pages/VerifyEmail";
 import About from "./pages/About";
+import Contact from "./pages/Contact";
 import MyProfile from "./components/Core/Dashboard/MyProfile";
 import Dashboard from "./pages/Dashboard";
 import PrivateRoute from "./components/Core/Auth/PrivateRoute";
 import Error from "./pages/Error";
+import EnrolledCourses from "./components/Core/Dashboard/EnrolledCourses";
+import Cart from "./components/Core/Dashboard/Cart";
+import { useDispatch, useSelector } from "react-redux";
+import { ACCOUNT_TYPE } from "./utils/constants";
+import Settings from "./components/Core/Dashboard/Settings";
 
 function App() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const { user } = useSelector((state) => state.profile);
+
   return (
-    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col">
+    <div className="w-screen min-h-screen bg-richblack-900 flex flex-col font-inter">
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -36,6 +47,7 @@ function App() {
             </OpenRoute>
           }
         />
+
         <Route
           path="forgot-password"
           element={
@@ -44,14 +56,7 @@ function App() {
             </OpenRoute>
           }
         />
-        <Route
-          path="update-password/:id"
-          element={
-            <OpenRoute>
-              <UpdatePassword />
-            </OpenRoute>
-          }
-        />
+
         <Route
           path="verify-email"
           element={
@@ -60,6 +65,16 @@ function App() {
             </OpenRoute>
           }
         />
+
+        <Route
+          path="update-password/:id"
+          element={
+            <OpenRoute>
+              <UpdatePassword />
+            </OpenRoute>
+          }
+        />
+
         <Route
           path="about"
           element={
@@ -68,6 +83,8 @@ function App() {
             </OpenRoute>
           }
         />
+        <Route path="/contact" element={<Contact />} />
+
         <Route
           element={
             <PrivateRoute>
@@ -76,9 +93,19 @@ function App() {
           }
         >
           <Route path="dashboard/my-profile" element={<MyProfile />} />
-          {/* <Route path="dashboard/settings" element={<Setting />} /> */}
+          <Route path="dashboard/settings" element={<Settings />} />
+
+          {user?.accountType === ACCOUNT_TYPE.STUDENT && (
+            <>
+              <Route path="dashboard/cart" element={<Cart />} />
+              <Route
+                path="dashboard/enrolled-courses"
+                element={<EnrolledCourses />}
+              />
+            </>
+          )}
         </Route>
-        
+
         <Route path="*" element={<Error />} />
       </Routes>
     </div>
