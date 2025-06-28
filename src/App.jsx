@@ -19,6 +19,7 @@ import Cart from "./components/Core/Dashboard/Cart";
 import { useDispatch, useSelector } from "react-redux";
 import { ACCOUNT_TYPE } from "./utils/constants";
 import Settings from "./components/Core/Dashboard/Settings";
+import AddCourse from "./components/Core/Dashboard/AddCourse";
 
 function App() {
   const dispatch = useDispatch();
@@ -102,6 +103,12 @@ function App() {
                 path="dashboard/enrolled-courses"
                 element={<EnrolledCourses />}
               />
+            </>
+          )}
+
+          {user?.accountType === ACCOUNT_TYPE.INSTRUCTOR && (
+            <>
+              <Route path="dashboard/add-course" element={<AddCourse />} />
             </>
           )}
         </Route>
