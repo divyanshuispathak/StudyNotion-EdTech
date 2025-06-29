@@ -1,14 +1,17 @@
-import { FaArrowRight } from "react-icons/fa6";
+import React from "react";
+import { FaArrowRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import HighlightText from "../components/Core/HomePage/HighlightText";
-import CTAButton from "../components/Core/HomePage/CTAButton";
+import HighlightText from "../components/core/HomePage/HighlightText";
+
+import CTAButton from "../components/core/HomePage/Button";
 import Banner from "../assets/Images/banner.mp4";
-import CodeBlocks from "../components/Core/HomePage/CodeBlocks";
-import TimelineSection from "../components/Core/HomePage/TimelineSection";
-import LearningLanguageSection from "../components/Core/HomePage/LearningLanguageSection";
-import InstructorSection from "../components/Core/HomePage/InstructorSection";
+import CodeBlocks from "../components/core/HomePage/CodeBlocks";
+import TimelineSection from "../components/core/HomePage/TimelineSection";
+import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection";
+import InstructorSection from "../components/core/HomePage/InstructorSection";
 import Footer from "../components/common/Footer";
-import ExploreMore from "../components/Core/HomePage/ExploreMore";
+import ExploreMore from "../components/core/HomePage/ExploreMore";
+import ReviewSlider from "../components/common/ReviewSlider";
 
 const Home = () => {
   return (
@@ -68,7 +71,7 @@ const Home = () => {
             heading={
               <div className="text-4xl font-semibold">
                 Unlock Your
-                <HighlightText text={"coding potential "} />
+                <HighlightText text={"coding potential"} />
                 with our online courses
               </div>
             }
@@ -76,12 +79,12 @@ const Home = () => {
               "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
             }
             ctabtn1={{
-              btnText: "Try it yourself",
+              btnText: "try it yourself",
               linkto: "/signup",
               active: true,
             }}
             ctabtn2={{
-              btnText: "Learn more",
+              btnText: "learn more",
               linkto: "/login",
               active: false,
             }}
@@ -97,7 +100,7 @@ const Home = () => {
             heading={
               <div className="text-4xl font-semibold">
                 Unlock Your
-                <HighlightText text={"coding potential "} />
+                <HighlightText text={"coding potential"} />
                 with our online courses
               </div>
             }
@@ -105,12 +108,12 @@ const Home = () => {
               "Our courses are designed and taught by industry experts who have years of experience in coding and are passionate about sharing their knowledge with you."
             }
             ctabtn1={{
-              btnText: "Try it yourself",
+              btnText: "try it yourself",
               linkto: "/signup",
               active: true,
             }}
             ctabtn2={{
-              btnText: "Learn more",
+              btnText: "learn more",
               linkto: "/login",
               active: false,
             }}
@@ -122,7 +125,7 @@ const Home = () => {
         <ExploreMore />
       </div>
 
-      {/* Section 2 */}
+      {/*Section 2  */}
       <div className="bg-pure-greys-5 text-richblack-700">
         <div className="homepage_bg h-[310px]">
           <div className="w-11/12 max-w-maxContent flex flex-col items-center justify-between gap-5 mx-auto">
@@ -166,16 +169,18 @@ const Home = () => {
         </div>
       </div>
 
-      {/* Section 3 */}
+      {/*Section 3 */}
       <div className="w-11/12 mx-auto max-w-maxContent flex-col items-center justify-between gap-8 first-letter bg-richblack-900 text-white">
         <InstructorSection />
-        <h2 className="text-center text-4xl font-semibold mt-10">
+
+        <h2 className="text-center text-4xl font-semobold mt-10">
           review from Other Learners
         </h2>
-        Review Slider here
+        {/* Review Slider here */}
+        <ReviewSlider />
       </div>
 
-      {/* Section 4 */}
+      {/*Footer */}
       <Footer />
     </div>
   );
