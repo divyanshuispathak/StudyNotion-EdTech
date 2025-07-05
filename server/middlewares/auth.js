@@ -2,6 +2,8 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const User = require("../models/User");
 
+dotenv.config();
+
 //auth
 exports.auth = async (req, res, next) => {
   try {
@@ -15,7 +17,7 @@ exports.auth = async (req, res, next) => {
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "TOken is missing",
+        message: "Token is missing",
       });
     }
 
@@ -43,6 +45,7 @@ exports.auth = async (req, res, next) => {
 //isStudent
 exports.isStudent = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     if (req.user.accountType !== "Student") {
       return res.status(401).json({
         success: false,
@@ -61,6 +64,7 @@ exports.isStudent = async (req, res, next) => {
 //isInstructor
 exports.isInstructor = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     if (req.user.accountType !== "Instructor") {
       return res.status(401).json({
         success: false,
@@ -79,6 +83,7 @@ exports.isInstructor = async (req, res, next) => {
 //isAdmin
 exports.isAdmin = async (req, res, next) => {
   try {
+    const userDetails = await User.findOne({ email: req.user.email });
     console.log("Printing AccountType ", req.user.accountType);
     if (req.user.accountType !== "Admin") {
       return res.status(401).json({
