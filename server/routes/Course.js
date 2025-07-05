@@ -5,6 +5,10 @@ const {
   createCourse,
   getAllCourses,
   getCourseDetails,
+  getFullCourseDetails,
+  editCourse,
+  getInstructorCourses,
+  deleteCourse,
 } = require("../controllers/Course")
 
 const {

@@ -25,6 +25,7 @@ import EditCourse from "./components/Core/Dashboard/EditCourse";
 import Catalog from "./pages/Catalog";
 import CourseDetails from "./pages/CourseDetails";
 import ViewCourse from "./pages/ViewCourse";
+import VideoDetails from "./components/Core/ViewCourse/VideoDetails"
 
 function App() {
   const dispatch = useDispatch();
