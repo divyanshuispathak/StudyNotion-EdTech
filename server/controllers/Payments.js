@@ -143,13 +143,12 @@ const enrollStudents = async (courses, userId, res) => {
         { new: true }
       );
 
-      ///bachhe ko mail send kardo
       const emailResponse = await mailSender(
         enrollStudents.email,
         `Successfully Enrolled into ${enrolledCourse.courseName}`,
         courseEnrollmentEmail(
           enrolledCourse.courseName,
-          `${enrolledStudent.firstName}`
+          `${enrolledStudent.firstName} ${enrolledStudent.lastName}`
         )
       );
       //console.log("Email Sent Successfully", emailResponse.response);
@@ -172,13 +171,12 @@ exports.sendPaymentSuccessEmail = async (req, res) => {
   }
 
   try {
-    //student ko dhundo
     const enrolledStudent = await User.findById(userId);
     await mailSender(
       enrolledStudent.email,
       `Payment Recieved`,
       paymentSuccessEmail(
-        `${enrolledStudent.firstName}`,
+        `${enrolledStudent.firstName} ${enrolledStudent.lastName}`,
         amount / 100,
         orderId,
         paymentId

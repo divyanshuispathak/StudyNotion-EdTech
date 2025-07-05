@@ -26,7 +26,14 @@ exports.createSection = async (req, res) => {
       {
         new: true,
       }
-    );
+    )
+      .populate({
+        path: "courseContent",
+        populate: {
+          path: "subSection",
+        },
+      })
+      .exec();
 
     // use populate to replace sections/sub-sections both in the updatedCourseDetails
     return res.status(200).json({

@@ -38,7 +38,6 @@ exports.sendOTP = async (req, res) => {
         lowerCaseAlphabets: false,
         specialChars: false,
       });
-      result = await Otp.findOne({ otp: otp });
     }
 
     const otpPayload = { email, otp };
@@ -92,7 +91,7 @@ exports.signup = async (req, res) => {
       return res.status(400).json({
         success: false,
         message:
-          "Password and ConfirmPassword values does not match, please try again",
+          "Password and ConfirmPassword values does not match, Please try again",
       });
     }
 
@@ -100,7 +99,7 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         success: false,
-        message: "User already exists",
+        message: "User already exists. Please sign in to continue.",
       });
     }
 
@@ -111,7 +110,7 @@ exports.signup = async (req, res) => {
     if (recentOtp.length == 0) {
       return res.status(400).json({
         success: false,
-        message: "Otp not found",
+        message: "OTP is not valid",
       });
     } else if (otp !== recentOtp[0].otp) {
       return res.status(400).json({
@@ -137,7 +136,8 @@ exports.signup = async (req, res) => {
       lastName,
       email,
       password: hashedPassword,
-      accountType,
+      accountType: accountType,
+      approved: approved,
       contactNumber,
       additionalDetails: profileDetails._id,
       image: `https://api.dicebear.com/5.x/initials/svg?seed=${firstName} ${lastName}`,
@@ -182,9 +182,10 @@ exports.login = async (req, res) => {
         email: user.email,
         id: user._id,
         accountType: user.accountType,
+        role: user.role
       };
       const token = jwt.sign(payload, process.env.JWT_SECRET, {
-        expiresIn: "2h",
+        expiresIn: "24h",
       });
       user.token = token;
       user.password = undefined;

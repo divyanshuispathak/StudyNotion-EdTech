@@ -5,9 +5,15 @@ const UploadImage = require("../utils/imageUploader");
 
 exports.createCourse = async (req, res) => {
   try {
-    const { courseName, courseDescription, whatYouWillLearn, price, category } =
+    const { courseName, courseDescription, whatYouWillLearn, price, category, tag: _tag, status, instructions: _instructions } =
       req.body;
     const thumbnail = req.files.thumbnailImage;
+    // Convert the tag and instructions from stringified Array to Array
+    const tag = JSON.parse(_tag)
+    const instructions = JSON.parse(_instructions)
+
+    console.log("tag", tag)
+    console.log("instructions", instructions)
 
     if (
       !courseName ||
@@ -15,7 +21,9 @@ exports.createCourse = async (req, res) => {
       !whatYouWillLearn ||
       !price ||
       !category ||
-      !thumbnail
+      !thumbnail ||
+      !tag.length ||
+      !instructions.length
     ) {
       return res.status(400).json({
         success: false,
@@ -24,7 +32,15 @@ exports.createCourse = async (req, res) => {
     }
 
     const userId = req.user.id;
-    const instructorDetails = await User.findById(userId);
+
+    if (!status || status === undefined) {
+      status = "Draft"
+    }
+
+     // Check if the user is an instructor
+    const instructorDetails = await User.findById(userId, {
+      accountType: "Instructor",
+    });
 
     if (!instructorDetails) {
       return res.status(404).json({
@@ -52,8 +68,11 @@ exports.createCourse = async (req, res) => {
       instructor: instructorDetails._id,
       whatYouWillLearn: whatYouWillLearn,
       price,
+      tag,
       category: categoryDetails._id,
       thumbnail: thumbnailImage.secure_url,
+      status: status,
+      instructions,
     });
 
     await User.findByIdAndUpdate(
@@ -73,7 +92,7 @@ exports.createCourse = async (req, res) => {
     // Update Category schema HW
     await Category.findByIdAndUpdate(
       {
-        id: categoryDetails._id,
+        id: category,
       },
       {
         $push: {
@@ -171,7 +190,7 @@ exports.editCourse = async (req, res) => {
 exports.getAllCourses = async (req, res) => {
   try {
     const allCourses = await Course.find(
-      {},
+      {status: "Published"},
       {
         courseName: true,
         price: true,
@@ -202,7 +221,7 @@ exports.getCourseDetails = async (req, res) => {
   try {
     const { courseId } = req.body;
 
-    const courseDetails = await Course.find({
+    const courseDetails = await Course.findOne({
       _id: courseId,
     })
       .populate({
@@ -217,6 +236,7 @@ exports.getCourseDetails = async (req, res) => {
         path: "courseContent",
         populate: {
           path: "subSection",
+          select: "-videoUrl",
         },
       })
       .exec();
@@ -228,10 +248,23 @@ exports.getCourseDetails = async (req, res) => {
       });
     }
 
+    let totalDurationInSeconds = 0
+    courseDetails.courseContent.forEach((content) => {
+      content.subSection.forEach((subSection) => {
+        const timeDurationInSeconds = parseInt(subSection.timeDuration)
+        totalDurationInSeconds += timeDurationInSeconds
+      })
+    })
+
+    const totalDuration = convertSecondsToDuration(totalDurationInSeconds)
+
     return res.status(200).json({
       success: true,
       message: "Course details fetched successfully",
-      data: courseDetails,
+      data: {
+        courseDetails,
+        totalDuration,
+      },
     });
   } catch (error) {
     console.log(error);

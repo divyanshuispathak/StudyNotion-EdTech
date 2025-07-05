@@ -1,5 +1,9 @@
 const Category = require("../models/Category");
 
+function getRandomInt(max) {
+  return Math.floor(Math.random() * max)
+}
+
 exports.createCategory = async (req, res) => {
   try {
     const { name, description } = req.body;
@@ -28,12 +32,12 @@ exports.createCategory = async (req, res) => {
 exports.showAllCategories = async (req, res) => {
   try {
     console.log("INSIDE SHOW ALL CATEGORIES");
-    const allCategories = Category.find({});
+    const allCategories = Category.find();
 
     return res.status(200).json({
       success: true,
       message: "All categories returned successfully",
-      allCategories,
+      data: allCategories,
     });
   } catch (error) {
     return res.status(500).json({
@@ -92,9 +96,6 @@ exports.categoryPageDetails = async (req, res) => {
       .populate({
         path: "courses",
         match: { status: "Published" },
-        populate: {
-          path: "instructor",
-        },
       })
       .exec();
     const allCourses = allCategories.flatMap((category) => category.courses);
