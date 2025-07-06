@@ -1,8 +1,9 @@
-import React from "react"
+import React from "react";
 
-import Footer from "../components/common/Footer"
-import ContactDetails from "../components/Core/ContactPage/contactDetails"
-import ContactForm from "../components/Core/ContactPage/ContactForm"
+import Footer from "../components/Common/Footer";
+import ReviewSlider from "../components/Common/ReviewSlider";
+import ContactDetails from "../components/Core/ContactUsPage/ContactDetails";
+import ContactForm from "../components/Core/ContactUsPage/ContactForm";
 
 const Contact = () => {
   return (
@@ -23,11 +24,11 @@ const Contact = () => {
         <h1 className="text-center text-4xl font-semibold mt-8">
           Reviews from other learners
         </h1>
-        {/* <ReviewSlider /> */}
+        <ReviewSlider />
       </div>
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Contact
+export default Contact;

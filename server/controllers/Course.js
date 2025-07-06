@@ -5,63 +5,77 @@ const UploadImage = require("../utils/imageUploader");
 
 exports.createCourse = async (req, res) => {
   try {
-    const { courseName, courseDescription, whatYouWillLearn, price, category, tag: _tag, status, instructions: _instructions } =
-      req.body;
-    const thumbnail = req.files.thumbnailImage;
+    // Get user ID from request object
+    const userId = req.user.id
+    console.log("PRINTINGGGGGGGGGGGGGGG", userId);
+
+    // Get all required fields from request body
+    let {
+      courseName,
+      courseDescription,
+      whatYouWillLearn,
+      price,
+      tag,
+      category,
+      status,
+      instructions,
+    } = req.body
+    // Get thumbnail image from request files
+    const thumbnail = req.files.thumbnailImage
+
     // Convert the tag and instructions from stringified Array to Array
-    const tag = JSON.parse(_tag)
-    const instructions = JSON.parse(_instructions)
+    const _tag = JSON.parse(tag || "[]")
+    const _instructions  = JSON.parse(instructions)
 
-    console.log("tag", tag)
-    console.log("instructions", instructions)
+    console.log("tag", _tag)
+    console.log("instructions", _instructions)
 
+    // Check if any of the required fields are missing
     if (
       !courseName ||
       !courseDescription ||
       !whatYouWillLearn ||
       !price ||
-      !category ||
-      !thumbnail ||
       !tag.length ||
+      !thumbnail ||
+      !category ||
       !instructions.length
     ) {
       return res.status(400).json({
         success: false,
-        message: "All fields are required",
-      });
+        message: "All Fields are Mandatory",
+      })
     }
-
-    const userId = req.user.id;
-
     if (!status || status === undefined) {
       status = "Draft"
     }
-
-     // Check if the user is an instructor
+    // Check if the user is an instructor
     const instructorDetails = await User.findById(userId, {
       accountType: "Instructor",
-    });
+    })
 
     if (!instructorDetails) {
       return res.status(404).json({
         success: false,
         message: "Instructor Details Not Found",
-      });
+      })
     }
 
-    const categoryDetails = await Category.findById(category);
+    // Check if the tag given is valid
+    const categoryDetails = await Category.findById(category)
     if (!categoryDetails) {
       return res.status(404).json({
         success: false,
         message: "Category Details Not Found",
-      });
+      })
     }
-
+    // Upload the Thumbnail to Cloudinary
     const thumbnailImage = await UploadImage.uploadImageToCloudinary(
       thumbnail,
       process.env.FOLDER_NAME
-    );
-
+    )
+    console.log(thumbnailImage)
+    // Create a new course with the given details
     const newCourse = await Course.create({
       courseName,
       courseDescription,
@@ -73,8 +87,9 @@ exports.createCourse = async (req, res) => {
       thumbnail: thumbnailImage.secure_url,
       status: status,
       instructions,
-    });
+    })
 
+    // Add the new course to the User Schema of the Instructor
     await User.findByIdAndUpdate(
       {
         _id: instructorDetails._id,
@@ -84,40 +99,35 @@ exports.createCourse = async (req, res) => {
           courses: newCourse._id,
         },
       },
-      {
-        new: true,
-      }
-    );
-
-    // Update Category schema HW
-    await Category.findByIdAndUpdate(
-      {
-        id: category,
-      },
+      { new: true }
+    )
+    // Add the new course to the Categories
+    const categoryDetails2 = await Category.findByIdAndUpdate(
+      { _id: category },
       {
         $push: {
           courses: newCourse._id,
         },
       },
-      {
-        new: true,
-      }
-    );
-
-    return res.status(200).json({
+      { new: true }
+    )
+    console.log("HEREEEEEEEE", categoryDetails2)
+    // Return the new course and a success message
+    res.status(200).json({
       success: true,
-      message: "Course Created Successfully",
       data: newCourse,
-    });
+      message: "Course Created Successfully",
+    })
   } catch (error) {
-    console.log(error);
-    return res.status(500).json({
+    // Handle any errors that occur during the creation of the course
+    console.error(error)
+    res.status(500).json({
       success: false,
-      message: "Failed to create Course",
+      message: "Failed to create course",
       error: error.message,
-    });
+    })
   }
-};
+}
 
 exports.editCourse = async (req, res) => {
   try {
