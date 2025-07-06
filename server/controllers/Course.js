@@ -7,7 +7,7 @@ exports.createCourse = async (req, res) => {
   try {
     // Get user ID from request object
     const userId = req.user.id
-    console.log("PRINTINGGGGGGGGGGGGGGG", userId);
+    
 
     // Get all required fields from request body
     let {
@@ -15,17 +15,17 @@ exports.createCourse = async (req, res) => {
       courseDescription,
       whatYouWillLearn,
       price,
-      tag,
+      tag: _tag,
       category,
       status,
-      instructions,
+      instructions: _instructions,
     } = req.body
     // Get thumbnail image from request files
     const thumbnail = req.files.thumbnailImage
 
     // Convert the tag and instructions from stringified Array to Array
-    const _tag = JSON.parse(tag || "[]")
-    const _instructions  = JSON.parse(instructions)
+    const tag = JSON.parse(_tag)
+    const instructions  = JSON.parse(_instructions)
 
     console.log("tag", _tag)
     console.log("instructions", _instructions)
@@ -111,7 +111,7 @@ exports.createCourse = async (req, res) => {
       },
       { new: true }
     )
-    console.log("HEREEEEEEEE", categoryDetails2)
+    
     // Return the new course and a success message
     res.status(200).json({
       success: true,
@@ -141,7 +141,6 @@ exports.editCourse = async (req, res) => {
 
     // If Thumbnail Image is found, update it
     if (req.files) {
-      console.log("thumbnail update");
       const thumbnail = req.files.thumbnailImage;
       const thumbnailImage = await uploadImageToCloudinary(
         thumbnail,

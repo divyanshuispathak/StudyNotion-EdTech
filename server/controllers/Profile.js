@@ -18,8 +18,6 @@ exports.updateProfile = async (req, res) => {
     } = req.body;
     const id = req.user.id;
 
-    console.log("UPDATED PROFILE DATA HERE.........", req.user.id);
-
     // Find the profile by id
     const userDetails = await User.findById(id);
     const profile = await Profile.findById(userDetails.additionalDetails);
@@ -66,8 +64,7 @@ exports.deleteAccount = async (req, res) => {
     // const job = schedule.scheduleJob("10 * * * * *", function () {
     // 	console.log("The answer to life, the universe, and everything!");
     // });
-    // console.log(job);
-    console.log("Printing ID: ", req.user.id);
+    
     const id = req.user.id;
 
     const user = await User.findById({ _id: id });

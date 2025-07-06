@@ -20,8 +20,6 @@ function Navbar() {
   const [subLinks, setSubLinks] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  console.log("SETSUBLINKSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS", subLinks)
-
   useEffect(() => {
     
     (async () => {
@@ -35,8 +33,6 @@ function Navbar() {
       setLoading(false);
     })();
   }, []);
-
-  // console.log("sub links", subLinks)
 
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);

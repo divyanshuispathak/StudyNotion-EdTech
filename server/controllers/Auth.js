@@ -11,7 +11,6 @@ require("dotenv").config();
 // send otp
 exports.sendOTP = async (req, res) => {
   try {
-    console.log("INSIDE SENDOTP");
     const { email } = req.body;
 
     const checkUserPresent = await User.findOne({ email });
@@ -22,14 +21,11 @@ exports.sendOTP = async (req, res) => {
       });
     }
 
-    console.log("BEFORE SENDING OTP");
     var otp = otpGenerator.generate(6, {
       upperCaseAlphabets: false,
       lowerCaseAlphabets: false,
       specialChars: false,
     });
-
-    console.log("Printing OPT HERE I KNOW", otp);
 
     // check if generated otp is unique or not
     const result = await Otp.findOne({ otp: otp });
@@ -220,7 +216,6 @@ exports.login = async (req, res) => {
 // change password
 exports.changePassword = async (req, res) => {
   try {
-    console.log("INCOMING DATA FOR PASSWORD CHANGE", req);
     // Get user data from req.user
     const userDetails = await User.findById(req.user.id);
 

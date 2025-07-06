@@ -23,9 +23,9 @@ function Catalog() {
   useEffect(() => {
     (async () => {
       try {
-        console.log("BEFORE CATEGORIES API");
+        
         const res = await apiConnector("GET", categories.CATEGORIES_API);
-        console.log("AFTER CATEGORIES API");
+        
         const category_id = res?.data?.data?.filter(
           (ct) => ct.name.split(" ").join("-").toLowerCase() === catalogName
         )[0]._id;

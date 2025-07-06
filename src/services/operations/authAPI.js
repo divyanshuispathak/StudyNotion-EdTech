@@ -23,9 +23,9 @@ export function sendOtp(email, navigate) {
         email,
         checkUserPresent: true,
       });
-      console.log("SENDOTP API RESPONSE............", response);
 
-      console.log(response.data.success);
+
+      
 
       if (!response.data.success) {
         throw new Error(response.data.message);
@@ -52,11 +52,11 @@ export function signUp(
   otp,
   navigate
 ) {
-  console.log("INSIDE SIGN UP")
+  
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));
-    console.log("BEFORE API CALL");
+    
     try {
       const response = await apiConnector("POST", SIGNUP_API, {
         accountType,

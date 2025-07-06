@@ -43,7 +43,7 @@ export default function Upload({
   });
 
   const previewFile = (file) => {
-    // console.log(file)
+    
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
