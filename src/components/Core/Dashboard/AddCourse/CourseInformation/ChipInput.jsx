@@ -10,11 +10,10 @@ export default function ChipInput({
   label,
   name,
   placeholder,
-  // register,
+  register,
   errors,
   setValue,
   getValues,
-  trigger
 }) {
   const { editCourse, course } = useSelector((state) => state.course);
 
@@ -22,18 +21,18 @@ export default function ChipInput({
   const [chips, setChips] = useState([]);
 
   useEffect(() => {
-    if (editCourse && course?.tag) {
+    if (editCourse) {
+      // console.log(course)
       setChips(course?.tag);
     }
-    // register(name, { required: true, validate: (value) => value.length > 0 });
+    register(name, { required: true, validate: (value) => value.length > 0 });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editCourse, course]);
+  }, []);
 
   useEffect(() => {
     setValue(name, chips);
-    trigger(name);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [chips, name, setValue, trigger]);
+  }, [chips]);
 
   // Function to handle user input when chips are added
   const handleKeyDown = (event) => {
@@ -46,7 +45,8 @@ export default function ChipInput({
       // Check if the input value exists and is not already in the chips array
       if (chipValue && !chips.includes(chipValue)) {
         // Add the chip to the array and clear the input
-        setChips((prev) => [...prev, chipValue]);
+        const newChips = [...chips, chipValue];
+        setChips(newChips);
         event.target.value = "";
       }
     }
