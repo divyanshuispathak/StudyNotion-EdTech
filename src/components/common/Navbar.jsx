@@ -21,7 +21,6 @@ function Navbar() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    
     (async () => {
       setLoading(true);
       try {
@@ -33,6 +32,8 @@ function Navbar() {
       setLoading(false);
     })();
   }, []);
+
+  // console.log("sub links", subLinks)
 
   const matchRoute = (route) => {
     return matchPath({ path: route }, location.pathname);
@@ -69,9 +70,12 @@ function Navbar() {
                         <div className="absolute left-[50%] top-0 -z-10 h-6 w-6 translate-x-[80%] translate-y-[-40%] rotate-45 select-none rounded bg-richblack-5"></div>
                         {loading ? (
                           <p className="text-center">Loading...</p>
-                        ) : subLinks.length ? (
+                        ) : subLinks?.length ? (
                           <>
                             {subLinks
+                              ?.filter(
+                                (subLink) => subLink?.courses?.length > 0
+                              )
                               ?.map((subLink, i) => (
                                 <Link
                                   to={`/catalog/${subLink.name
