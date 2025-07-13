@@ -1,7 +1,11 @@
 const Course = require("../models/Course");
 const Category = require("../models/Category");
 const User = require("../models/User");
+const Section = require("../models/Section")
+const SubSection = require("../models/SubSection")
 const UploadImage = require("../utils/imageUploader");
+const CourseProgress = require("../models/CourseProgress");
+const { convertSecondsToDuration } = require("../utils/secToDuration");
 
 exports.createCourse = async (req, res) => {
   try {
@@ -287,7 +291,9 @@ exports.getCourseDetails = async (req, res) => {
 
 exports.getFullCourseDetails = async (req, res) => {
   try {
+    console.log("INSIDE GET FULL COURSE DETAILS")
     const { courseId } = req.body;
+    console.log("COURSE IDDD", courseId)
     const userId = req.user.id;
     const courseDetails = await Course.findOne({
       _id: courseId,

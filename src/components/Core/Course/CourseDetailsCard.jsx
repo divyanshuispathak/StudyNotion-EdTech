@@ -5,6 +5,8 @@ import copy from "copy-to-clipboard";
 import { toast } from "react-hot-toast";
 import { ACCOUNT_TYPE } from "../../../utils/constants";
 import { addToCart } from "../../../slices/cartSlice";
+import { BsFillCaretRightFill } from "react-icons/bs"
+import { FaShareSquare } from "react-icons/fa"
 
 function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
   const { user } = useSelector((state) => state.profile);
@@ -62,16 +64,16 @@ function CourseDetailsCard({ course, setConfirmationModal, handleBuyCourse }) {
             <button
               className="yellowButton"
               onClick={
-                user && course?.studentsEnroled.includes(user?._id)
+                user && course?.studentsEnroled?.includes(user?._id)
                   ? () => navigate("/dashboard/enrolled-courses")
                   : handleBuyCourse
               }
             >
-              {user && course?.studentsEnroled.includes(user?._id)
+              {user && course?.studentsEnroled?.includes(user?._id)
                 ? "Go To Course"
                 : "Buy Now"}
             </button>
-            {(!user || !course?.studentsEnroled.includes(user?._id)) && (
+            {(!user || !course?.studentsEnroled?.includes(user?._id)) && (
               <button onClick={handleAddToCart} className="blackButton">
                 Add to Cart
               </button>
