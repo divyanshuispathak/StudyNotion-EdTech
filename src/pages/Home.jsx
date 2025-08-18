@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 // Image and Video Import
 import Banner from "../assets/Images/banner.mp4";
 // Component Imports
-import Footer from "../components/Common/Footer";
-import ReviewSlider from "../components/Common/ReviewSlider";
+import Footer from "../components/common/Footer";
+import ReviewSlider from "../components/common/ReviewSlider";
 import CTAButton from "../components/Core/HomePage/CTAButton";
 import CodeBlocks from "../components/Core/HomePage/CodeBlocks";
 import ExploreMore from "../components/Core/HomePage/ExploreMore";

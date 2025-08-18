@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import IconBtn from "../../common/IconBtn";
 import { createRating } from "../../../services/operations/courseDetailsAPI";
+import { RxCross2 } from "react-icons/rx";
+import ReactStars from "react-rating-stars-component";
 
 export default function CourseReviewModal({ setReviewModal }) {
   const { user } = useSelector((state) => state.profile);

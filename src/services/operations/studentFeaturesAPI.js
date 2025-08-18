@@ -71,10 +71,10 @@ export async function BuyCourse(
 
     // Opening the Razorpay SDK
     const options = {
-      key: process.env.RAZORPAY_KEY,
-      currency: orderResponse.data.data.currency,
-      amount: `${orderResponse.data.data.amount}`,
-      order_id: orderResponse.data.data.id,
+      key: import.meta.env.VITE_RAZORPAY_KEY,
+      currency: orderResponse.data.message.currency,
+      amount: `${orderResponse.data.message.amount}`,
+      order_id: orderResponse.data.message.id,
       name: "StudyNotion",
       description: "Thank you for Purchasing the Course.",
       image: rzpLogo,
@@ -85,7 +85,7 @@ export async function BuyCourse(
       handler: function (response) {
         sendPaymentSuccessEmail(
           response,
-          orderResponse.data.data.amount,
+          orderResponse.data.message.amount,
           token
         );
         verifyPayment({ ...response, courses }, token, navigate, dispatch);
