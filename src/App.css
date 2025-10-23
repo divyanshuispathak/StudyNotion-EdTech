@@ -243,3 +243,8 @@ details > summary::-webkit-details-marker {
   fill: #838894;
   color: #838894;
 }
+
+.swiper-slide {
+  width: 100%;
+  height: 100%;
+}

@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
-import ConfirmationModal from "../components/Common/ConfirmationModal";
+import ConfirmationModal from "../components/common/ConfirmationModal";
 import Footer from "../components/Common/Footer";
 import RatingStars from "../components/Common/RatingStars";
 import CourseAccordionBar from "../components/core/Course/CourseAccordionBar";
@@ -94,7 +94,7 @@ function CourseDetails() {
     courseContent,
     ratingAndReviews,
     instructor,
-    studentsEnroled,
+    studentsEnrolled,
     createdAt,
   } = response.data?.courseDetails;
 
@@ -147,12 +147,21 @@ function CourseDetails() {
               <div className="text-md flex flex-wrap items-center gap-2">
                 <span className="text-yellow-25">{avgReviewCount}</span>
                 <RatingStars Review_Count={avgReviewCount} Star_Size={24} />
-                <span>{`(${ratingAndReviews?.length} reviews)`}</span>
-                <span>{`${studentsEnroled?.length} students enrolled`}</span>
+                <span>
+                  {ratingAndReviews?.length === 1
+                    ? "(1 review)"
+                    : `(${ratingAndReviews?.length} reviews)`}
+                </span>
+                <span>
+                  {studentsEnrolled?.length === 1
+                    ? "1 student enrolled"
+                    : `${studentsEnrolled?.length} students enrolled`}
+                </span>
               </div>
               <div>
                 <p className="">
-                  Created By {`${instructor?.firstName} ${instructor?.lastName}`}
+                  Created By{" "}
+                  {`${instructor?.firstName} ${instructor?.lastName}`}
                 </p>
               </div>
               <div className="flex flex-wrap gap-5 text-lg">

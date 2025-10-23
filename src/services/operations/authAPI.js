@@ -68,8 +68,6 @@ export function signUp(
         otp,
       });
 
-      console.log("SIGNUP API RESPONSE............", response);
-
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -89,14 +87,11 @@ export function login(email, password, navigate) {
   return async (dispatch) => {
     const toastId = toast.loading("Loading...");
     dispatch(setLoading(true));
-    console.log("Login API Responsee.......", LOGIN_API);
     try {
       const response = await apiConnector("POST", LOGIN_API, {
         email,
         password,
       });
-
-      console.log("LOGIN API RESPONSE............", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);
@@ -128,8 +123,6 @@ export function getPasswordResetToken(email, setEmailSent) {
         email,
       });
 
-      console.log("RESETPASSTOKEN RESPONSE............", response);
-
       if (!response.data.success) {
         throw new Error(response.data.message);
       }
@@ -155,8 +148,6 @@ export function resetPassword(password, confirmPassword, token, navigate) {
         confirmPassword,
         token,
       });
-
-      console.log("RESETPASSWORD RESPONSE............", response);
 
       if (!response.data.success) {
         throw new Error(response.data.message);

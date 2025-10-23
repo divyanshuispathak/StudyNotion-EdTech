@@ -34,8 +34,8 @@ function ReviewSlider() {
   }, []);
 
   return (
-    <div className="text-white">
-      <div className="my-[50px] h-[184px] max-w-maxContentTab lg:max-w-maxContent">
+    <div className="text-white w-[100%]">
+      <div className="my-[50px] h-[184px] swiper-slide swiper">
         <Swiper
           slidesPerView={4}
           spaceBetween={25}
@@ -77,11 +77,11 @@ function ReviewSlider() {
                           .join(" ")} ...`
                       : `${review?.review}`}
                   </p>
-                  <div className="flex items-center gap-2 ">
+                  <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-yellow-100">
                       {review.rating.toFixed(1)}
                     </h3>
-                    <ReactStars
+                    {typeof review.rating === "number" && <ReactStars
                       count={5}
                       value={review.rating}
                       size={20}
@@ -89,7 +89,7 @@ function ReviewSlider() {
                       activeColor="#ffd700"
                       emptyIcon={<FaStar />}
                       fullIcon={<FaStar />}
-                    />
+                    />}
                   </div>
                 </div>
               </SwiperSlide>
