@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { markLectureAsComplete } from "../../../services/operations/courseDetailsAPI";
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
-import { BigPlayButton, Player } from "video-react";
+import { Player } from "video-react";
 import "video-react/dist/video-react.css";
 import { AiFillPlayCircle } from "react-icons/ai";
-import IconBtn from "../../common/IconBtn";
+import IconBtn from "../../Common/IconBtn";
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
@@ -22,53 +22,42 @@ const VideoDetails = () => {
   const [previewSource, setPreviewSource] = useState("");
   const [videoEnded, setVideoEnded] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      if (!courseSectionData.length) return;
-      if (!courseId && !sectionId && !subSectionId) {
-        navigate(`/dashboard/enrolled-courses`);
-      } else {
-        const filteredData = courseSectionData.filter(
-          (course) => course._id === sectionId
-        );
-        const filteredVideoData = filteredData?.[0]?.subSection.filter(
-          (data) => data._id === subSectionId
-        );
-        setVideoData(filteredVideoData[0]);
-        setPreviewSource(courseEntireData.thumbnail);
-        setVideoEnded(false);
-      }
-    })();
+    if (!courseSectionData.length) return;
+    if (!courseId && !sectionId && !subSectionId) {
+      navigate(`/dashboard/enrolled-courses`);
+    } else {
+      const filteredData = courseSectionData.filter(
+        (course) => course._id === sectionId
+      );
+      const filteredVideoData = filteredData?.[0]?.subSection.filter(
+        (data) => data._id === subSectionId
+      );
+      setVideoData(filteredVideoData[0]);
+      setPreviewSource(courseEntireData.thumbnail);
+      setVideoEnded(false);
+      setIsPlaying(false);
+    }
   }, [courseSectionData, courseEntireData, location.pathname]);
 
-  // check if the lecture is the first video of the course
   const isFirstVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
       (data) => data._id === sectionId
     );
-
     const currentSubSectionIndx = courseSectionData[
       currentSectionIndx
     ].subSection.findIndex((data) => data._id === subSectionId);
-
-    if (currentSectionIndx === 0 && currentSubSectionIndx === 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return currentSectionIndx === 0 && currentSubSectionIndx === 0;
   };
 
-  // go to the next video
   const goToNextVideo = () => {
-
     const currentSectionIndx = courseSectionData.findIndex(
       (data) => data._id === sectionId
     );
-
     const noOfSubsections =
       courseSectionData[currentSectionIndx].subSection.length;
-
     const currentSubSectionIndx = courseSectionData[
       currentSectionIndx
     ].subSection.findIndex((data) => data._id === subSectionId);
@@ -91,36 +80,25 @@ const VideoDetails = () => {
     }
   };
 
-  // check if the lecture is the last video of the course
   const isLastVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
       (data) => data._id === sectionId
     );
-
     const noOfSubsections =
       courseSectionData[currentSectionIndx].subSection.length;
-
     const currentSubSectionIndx = courseSectionData[
       currentSectionIndx
     ].subSection.findIndex((data) => data._id === subSectionId);
-
-    if (
+    return (
       currentSectionIndx === courseSectionData.length - 1 &&
       currentSubSectionIndx === noOfSubsections - 1
-    ) {
-      return true;
-    } else {
-      return false;
-    }
+    );
   };
 
-  // go to the previous video
   const goToPrevVideo = () => {
-
     const currentSectionIndx = courseSectionData.findIndex(
       (data) => data._id === sectionId
     );
-
     const currentSubSectionIndx = courseSectionData[
       currentSectionIndx
     ].subSection.findIndex((data) => data._id === subSectionId);
@@ -168,22 +146,40 @@ const VideoDetails = () => {
           className="h-full w-full rounded-md object-cover"
         />
       ) : (
-        <Player
-          ref={playerRef}
-          aspectRatio="16:9"
-          playsInline
-          onEnded={() => setVideoEnded(true)}
-          src={videoData?.videoUrl}
-        >
-          <BigPlayButton position="center" />
-          {/* Render When Video Ends */}
+        <div className="relative">
+          <Player
+            ref={playerRef}
+            aspectRatio="16:9"
+            playsInline
+            onEnded={() => setVideoEnded(true)}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+            src={videoData?.videoUrl}
+          />
+
+          {/* ✅ Custom Big Play Button Overlay */}
+          {!isPlaying && !videoEnded && (
+            <div
+              className="absolute inset-0 flex items-center justify-center bg-black/40 cursor-pointer"
+              onClick={() => {
+                if (playerRef.current) {
+                  playerRef.current.play();
+                  setIsPlaying(true);
+                }
+              }}
+            >
+              <AiFillPlayCircle size={80} color="white" />
+            </div>
+          )}
+
+          {/* ✅ When Video Ends */}
           {videoEnded && (
             <div
               style={{
                 backgroundImage:
-                  "linear-gradient(to top, rgb(0, 0, 0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1)",
+                  "linear-gradient(to top, rgb(0,0,0), rgba(0,0,0,0.7), rgba(0,0,0,0.5), rgba(0,0,0,0.1))",
               }}
-              className="full absolute inset-0 z-[100] grid h-full place-content-center font-inter"
+              className="absolute inset-0 z-[100] grid h-full place-content-center font-inter"
             >
               {!completedLectures.includes(subSectionId) && (
                 <IconBtn
@@ -197,9 +193,9 @@ const VideoDetails = () => {
                 disabled={loading}
                 onclick={() => {
                   if (playerRef?.current) {
-                    // set the current time of the video to 0
-                    playerRef?.current?.seek(0);
+                    playerRef.current.seek(0);
                     setVideoEnded(false);
+                    playerRef.current.play();
                   }
                 }}
                 text="Rewatch"
@@ -227,7 +223,7 @@ const VideoDetails = () => {
               </div>
             </div>
           )}
-        </Player>
+        </div>
       )}
 
       <h1 className="mt-4 text-3xl font-semibold">{videoData?.title}</h1>
