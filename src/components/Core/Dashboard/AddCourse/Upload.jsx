@@ -2,9 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { FiUploadCloud } from "react-icons/fi";
 import { useSelector } from "react-redux";
-
-import "video-react/dist/video-react.css";
-import { Player } from "video-react";
+import ReactPlayer from "react-player";
 
 export default function Upload({
   name,
@@ -24,8 +22,8 @@ export default function Upload({
   const inputRef = useRef(null);
 
   const handleBrowseClick = () => {
-  inputRef.current?.click();
-};
+    inputRef.current?.click();
+  };
 
   const onDrop = (acceptedFiles) => {
     const file = acceptedFiles[0];
@@ -43,7 +41,6 @@ export default function Upload({
   });
 
   const previewFile = (file) => {
-    
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
@@ -80,7 +77,16 @@ export default function Upload({
                 className="h-full w-full rounded-md object-cover"
               />
             ) : (
-              <Player aspectRatio="16:9" playsInline src={previewSource} />
+              <div className="relative w-full aspect-video">
+                <ReactPlayer
+                  url={previewSource}
+                  width="100%"
+                  height="100%"
+                  controls
+                  playing={false}
+                  style={{ borderRadius: "0.5rem", overflow: "hidden" }}
+                />
+              </div>
             )}
             {!viewData && (
               <button
@@ -99,7 +105,7 @@ export default function Upload({
         ) : (
           <div
             className="flex w-full flex-col items-center p-6"
-            {...getRootProps()} 
+            {...getRootProps()}
           >
             <input {...getInputProps()} ref={inputRef} />
             <div className="grid aspect-square w-14 place-items-center rounded-full bg-pure-greys-800">
@@ -107,8 +113,13 @@ export default function Upload({
             </div>
             <p className="mt-2 max-w-[200px] text-center text-sm text-richblack-200">
               Drag and drop an {!video ? "image" : "video"}, or click to{" "}
-              <span className="font-semibold text-yellow-50" onClick={handleBrowseClick}>Browse</span> a
-              file
+              <span
+                className="font-semibold text-yellow-50"
+                onClick={handleBrowseClick}
+              >
+                Browse
+              </span>{" "}
+              a file
             </p>
             <ul className="mt-10 flex list-disc justify-between space-x-12 text-center  text-xs text-richblack-200">
               <li>Aspect ratio 16:9</li>
