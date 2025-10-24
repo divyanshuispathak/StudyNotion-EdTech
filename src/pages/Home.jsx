@@ -12,7 +12,7 @@ import CodeBlocks from "../components/Core/HomePage/CodeBlocks";
 import ExploreMore from "../components/Core/HomePage/ExploreMore";
 import HighlightText from "../components/Core/HomePage/HighlightText";
 import InstructorSection from "../components/Core/HomePage/InstructorSection";
-import LearningLanguageSection from "../components/core/HomePage/LearningLanguageSection";
+import LearningLanguageSection from "../components/Core/HomePage/LearningLanguageSection";
 import TimelineSection from "../components/Core/HomePage/TimelineSection";
 
 function Home() {

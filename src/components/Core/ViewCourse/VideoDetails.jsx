@@ -5,7 +5,7 @@ import { markLectureAsComplete } from "../../../services/operations/courseDetail
 import { updateCompletedLectures } from "../../../slices/viewCourseSlice";
 import ReactPlayer from "react-player";
 import { AiFillPlayCircle } from "react-icons/ai";
-import IconBtn from "../../Common/IconBtn";
+import IconBtn from "../../common/IconBtn";
 
 const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
