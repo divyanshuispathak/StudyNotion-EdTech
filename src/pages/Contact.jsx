@@ -3,7 +3,7 @@ import React from "react";
 import Footer from "../components/common/Footer";
 import ReviewSlider from "../components/common/ReviewSlider";
 import ContactForm from "../components/Core/ContactUsPage/ContactForm";
-import ContactDetails from "../components/Core/ContactUsPage/ContactDetails";
+import ContactDetails from "../components/Core/ContactUsPage/contactDetails";
 
 const Contact = () => {
   return (
